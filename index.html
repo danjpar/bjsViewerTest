@@ -21,7 +21,7 @@ html,body,canvas { margin: 0; padding: 0; width: 100%; height: 100%; font-size: 
 
 <script>
 BabylonViewer.viewerManager.onViewerAdded = function(viewer) {
-    let newExplode = new BABYLON.MeshExploder(viewer2.sceneManager.models[0].meshes);
+    var newExplode = new BABYLON.MeshExploder(viewer.sceneManager.models[0].meshes);
     newExplode.explode(0);
 }
 </script>
