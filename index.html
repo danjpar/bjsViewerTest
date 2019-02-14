@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<title>Babylon.js demo</title>
+<style>
+html,body,canvas { margin: 0; padding: 0; width: 100%; height: 100%; font-size: 0; }
+
+</style>
+</head>
+<body>
+
+<babylon>
+<model url="./test.babylon">
+</babylon>
+
+<script src='babylon.viewer.max.js'></script>
+<script src='babylon.max.js'></script>
+<script src="babylon.objFileLoader.js"></script>
+<script src="babylon.loaders.js"></script>
+
+</body>
+</html>
+
+
+<!--
+#slidecontainer { position:absolute;width:100%;background:rgba(0,0,0,0.4);text-align:center; }
+#slider {margin:0 auto;}
+<canvas id='render-canvas'></canvas>
+<script>
+    var newArray;
+    var slider = document.getElementById('slider');
+    var lastPos = slider.value;
+    slider.oninput = function() {
+        newExplosion.explode(slider.value*1);
+    };
+    
+    var canvas = document.getElementById('render-canvas');
+    window.onresize = function(){
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    };
+    var engine = new BABYLON.Engine(canvas);
+    engine.enableOfflineSupport = false;
+
+    var scene = new BABYLON.Scene(engine);
+    scene.clearColor = new BABYLON.Color3(0.8, 0.8, 0.8);
+
+    var light = new BABYLON.PointLight('Omni', new BABYLON.Vector3(0, 0, 0), scene);
+
+    scene.onBeforeRenderObservable.add(function () {     
+        light.position = camera.position.clone();
+    });
+
+    var camera = new BABYLON.ArcRotateCamera('Camera', 0, 0, 140, new BABYLON.Vector3(0,0,0), scene);
+    camera.beta = Math.PI/2 - .2;
+    camera.alpha = Math.PI/2;
+    camera.attachControl(canvas, false);
+    camera.zoomingSensibility = 25;
+    camera.panningSensibility = 50;
+    var sourceMat = new BABYLON.MultiMaterial('sourceMat', scene);
+    var sourceMat0 = new BABYLON.StandardMaterial('sourceMat', scene);
+    sourceMat0.diffuseColor = new BABYLON.Color3.Black();
+    var sourceMat1 = new BABYLON.StandardMaterial('sourceMat', scene);
+    sourceMat1.diffuseColor = new BABYLON.Color3.Red();
+    var sourceMat2 = new BABYLON.StandardMaterial('sourceMat', scene);
+    sourceMat2.diffuseColor = new BABYLON.Color3.Green();
+    sourceMat.subMaterials.push(sourceMat0, sourceMat1, sourceMat2)
+
+    
+    var toExplodeArray = [];
+    var cylinder = BABYLON.MeshBuilder.CreateCylinder('cylinder', { diameter:2, tessellation:6 }, scene);
+    toExplodeArray.push(cylinder);
+    var cube1 = BABYLON.MeshBuilder.CreateBox('cube1', {  }, scene);
+    cube1.position.y += 3.5;
+    toExplodeArray.push(cube1);
+    var cube2 = BABYLON.MeshBuilder.CreateBox('cube2', {  }, scene);
+    cube2.position.y += 3.5;
+    cube2.position.x += 1;
+    toExplodeArray.push(cube2);
+    var cube3 = BABYLON.MeshBuilder.CreateBox('cube3', {  }, scene);
+    cube3.position.y += 3.5;
+    cube3.position.x -= 1;
+    toExplodeArray.push(cube3);
+    var cube4 = BABYLON.MeshBuilder.CreateBox('cube3', {  }, scene);
+    cube4.position.y += 7.5;
+    toExplodeArray.push(cube4);
+    //cube4.subdivide(6);
+    var cube11 = BABYLON.MeshBuilder.CreateBox('cube11', {  }, scene);
+    cube11.position.z += 1.25;
+    toExplodeArray.push(cube11);
+    var cube22 = BABYLON.MeshBuilder.CreateBox('cube22', {  }, scene);
+    cube22.position.z -= 1.25;
+    toExplodeArray.push(cube22);
+    var sphere1 = BABYLON.MeshBuilder.CreateSphere('sphere1', { segments:12, diameter:2 }, scene);
+    sphere1.position.y += 2;
+    toExplodeArray.push(sphere1);
+    var sphere2 = BABYLON.MeshBuilder.CreateSphere('sphere2', { segments:12, diameter:3 }, scene);
+    sphere2.position.y += 5.5;
+    toExplodeArray.push(sphere2);
+    for (var alpha = 0; alpha < Math.PI*2; alpha+=Math.PI/10) {
+        var sphere0 = BABYLON.MeshBuilder.CreateSphere('sphere0', { segments:8, diameter:.5 }, scene);
+        sphere0.position.y = 2;
+        sphere0.position.z = Math.cos(alpha)*1.25;
+        sphere0.position.x = Math.sin(alpha)*1.25;
+        toExplodeArray.push(sphere0);
+    }
+    for (var count = 1; count < 10; count+=2) {
+        var sphere2 = BABYLON.MeshBuilder.CreateSphere('sphere2', { segments:8, diameter:.75 }, scene);
+        sphere2.position.z += 1.25;
+        sphere2.position.x += .5+.3725*count;
+        toExplodeArray.push(sphere2);
+        var sphere3 = BABYLON.MeshBuilder.CreateSphere('sphere3', { segments:8, diameter:.75 }, scene);
+        sphere3.position.z -= 1.25;
+        sphere3.position.x -= .5+.3725*count;
+        toExplodeArray.push(sphere3);
+    }
+    for (var index = 0; index < toExplodeArray.length; index++) {
+        toExplodeArray[index].material = sourceMat.subMaterials[index % 3];
+    }
+
+    var newExplosion = new BABYLON.MeshExploder(toExplodeArray);
+    
+    var renderLoop = function () {
+        scene.render();
+    };
+    engine.runRenderLoop(renderLoop);
+
+</script>
+-->
+<!--
+    //var toExplode = BABYLON.Mesh.MergeMeshes(toExplodeArray, undefined, undefined, undefined, undefined, true);
+    
+    /*
+    toExplode.material = sourceMat;
+    var absCenter = toExplode._boundingInfo.boundingBox.centerWorld;
+    toExplode.position.x += 8;
+    var newMeshArray = deconstructMesh(toExplode);
+
+    var toExplode2 = BABYLON.Mesh.MergeMeshes(toExplodeArray, true, undefined, undefined, undefined, true);
+    toExplode2.material = sourceMat;
+    var absCenter = toExplode2._boundingInfo.boundingBox.centerWorld;
+    toExplode2.position.x -= 8;
+
+    //var newMeshArray = deconstructMesh(toExplode2);
+    //var centerMesh = findCenterMesh(newMeshArray);
+    //moveRest(centerMesh, newMeshArray);
+
+    function findCenterMesh(arr) {
+        var centerMesh;
+        var centerMeshIndex = 0;
+        var distanceToCenter = Number.MAX_VALUE;
+        for (var index = 0; index < arr.length; index++) {
+            var v1 = arr[index]._boundingInfo.boundingBox.centerWorld;
+            var v0 = v1.subtract(absCenter);
+            var v3 = v0.length();
+            if (v3 < distanceToCenter) {
+                centerMesh = arr[index];
+                distanceToCenter = v3;
+                centerMeshIndex = index;
+            }
+        }
+        arr.splice(centerMeshIndex, 1);
+        return centerMesh;
+    }
+
+    function moveRest(mesh, arr) {
+        for (var index = 0; index < arr.length; index++) {
+            var v1 = mesh._boundingInfo.boundingBox.centerWorld;
+            var v2 = arr[index]._boundingInfo.boundingBox.centerWorld;
+            var v0 = v2.subtract(v1);
+            var v3 = v0.length();
+            v0.normalize();
+            arr[index].translate(v0, v3, BABYLON.Space.WORLD);
+        }
+    }
+    
+    function deconstructMesh(mesh) {
+        if (mesh.subMeshes.length > 1) {
+            var otherVertexData = BABYLON.VertexData.ExtractFromMesh(mesh, true, true);
+            var indices = otherVertexData.indices;
+            var normals = otherVertexData.normals;
+            var positions = otherVertexData.positions;
+            var uvs = otherVertexData.uvs;
+            var newMeshArray = [];
+            for (var index = 0; index < mesh.subMeshes.length; index++) {
+                var newVertexData = new BABYLON.VertexData();
+                
+                var newI = indices.slice(mesh.subMeshes[index].indexStart, mesh.subMeshes[index].indexStart+mesh.subMeshes[index].indexCount);
+                var newN = normals.slice(mesh.subMeshes[index].verticesStart * 3, mesh.subMeshes[index].verticesStart * 3 + mesh.subMeshes[index].verticesCount * 3);
+                var newP = positions.slice(mesh.subMeshes[index].verticesStart * 3, mesh.subMeshes[index].verticesStart * 3 + mesh.subMeshes[index].verticesCount * 3);
+                var newU = uvs.slice(mesh.subMeshes[index].verticesStart * 2, mesh.subMeshes[index].verticesStart * 2 + mesh.subMeshes[index].verticesCount * 2);
+                for (var subIndex = 0; subIndex < newI.length; subIndex++) {
+                    newI[subIndex] = newI[subIndex] - mesh.subMeshes[index].verticesStart;
+                }
+
+                newVertexData.indices = newI;
+                newVertexData.normals = newN;
+                newVertexData.positions = newP;
+                newVertexData.uvs = newU;
+                
+                var meshSubclass = new BABYLON.Mesh('new-'+index, scene);
+                
+                newVertexData.applyToMesh(meshSubclass);
+                        
+                newMeshArray.push(meshSubclass);
+
+            }
+            return newMeshArray;
+        } else {
+            return [mesh];
+        }
+    }
+    for (var index = 0; index < newMeshArray.length; index++) {
+        var bottomMesh = findBottom(newMeshArray);
+        moveRest(bottomMesh, newMeshArray);
+    }
+
+    //moveAll(newMeshArray);
+    function moveAll(arr) {
+        for (var index = 0; index < arr.length; index++) {
+            var v1 = arr[index]._boundingInfo.boundingBox.centerWorld;
+            var v0 = v1.subtract(absCenter);
+            var v3 = v0.length();
+            v0.normalize();
+            arr[index].translate(v0, v3, BABYLON.Space.WORLD);
+        }
+    }
+
+    function findBottom(arr) {
+        var bottomMesh = arr[0];
+        var bottomMeshIndex = 0;
+        for (var index = 1; index < arr.length; index++) {
+            if (arr[index]._boundingInfo.boundingBox.centerWorld.y < bottomMesh._boundingInfo.boundingBox.centerWorld.y) {
+                bottomMesh = arr[index];
+                bottomMeshIndex = index;
+            }
+        }
+        arr.splice(bottomMeshIndex, 1);
+        return bottomMesh;
+    }
+
+    var alpha = Math.PI;
+    // Create a mesh for the trail to follow.
+    var cube = BABYLON.MeshBuilder.CreateBox('cube', {  }, scene);
+    cube.scaling.y = 2;
+    cube.bakeCurrentTransformIntoVertices();
+    cube.position.x = Math.sin(alpha)*10;
+    cube.position.z = Math.cos(alpha)*10;
+    cube.computeWorldMatrix(true);
+
+    var trail = new BABYLON.TrailMesh('new', cube, scene, .5, 60, true);
+
+    var sourceMat = new BABYLON.StandardMaterial('sourceMat', scene);
+    sourceMat.emissiveColor = 
+    sourceMat.diffuseColor = new BABYLON.Color3.Red();
+    sourceMat.specularColor = new BABYLON.Color3.Black();
+
+    trail.material = sourceMat;
+
+    observer = scene.onBeforeRenderObservable.add(animate);
+    function animate() {
+        alpha += Math.PI/120;
+        cube.position.x = Math.sin(alpha)*10;
+        cube.position.z = Math.cos(alpha)*10;
+        cube.rotation.x = Math.PI*alpha/2;
+        cube.rotation.y = alpha;
+    }
+    setTimeout(function() {
+        scene.onBeforeRenderObservable.remove(observer);
+        newTrail.stop()
+    }, 5000);
+*/
+-->
