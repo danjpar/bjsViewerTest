@@ -19,6 +19,13 @@ html,body,canvas { margin: 0; padding: 0; width: 100%; height: 100%; font-size: 
 <script src="babylon.objFileLoader.js"></script>
 <script src="babylon.loaders.js"></script>
 
+<script>
+let element = document.querySelector('babylon');
+let viewer2 = BabylonViewer.viewerManager.getViewerByHTMLElement(element);
+let newExplode = new BABYLON.MeshExploder(viewer2.sceneManager.models[0].meshes);
+newExplode.explode(0);
+</script>
+
 </body>
 </html>
 
