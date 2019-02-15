@@ -10,13 +10,50 @@ html,body,canvas { margin: 0; padding: 0; width: 100%; height: 100%; font-size: 
 </head>
 <body>
 
-<babylon>
-<model url="./test.gltf">
+<babylon id="babylon-viewer">
+<model url="./test3.gltf">
 </babylon>
 
 <script src='babylon.viewer.max.js'></script>
 <script src='babylon.max.js'></script>
 <script src="babylonjs.loaders.js"></script>
+
+<script>
+BabylonViewer.viewerManager.getViewerPromiseById('babylon-viewer').then(function (viewer) {
+                // this will resolve only after the viewer with this specific ID is initialized
+                console.log('Using promises: ', 'viewer - ' + viewer.getBaseId());
+                viewerObservables(viewer);
+});
+function viewerObservables(viewer) {
+    viewer.onModelLoadedObservable.add(function (model) {
+        newExplosion3 = new BABYLON.MeshExploder(model._meshes, model._meshes[0]);
+    });
+}
+
+// Using JS class, will fail in IE
+class MyAwesomeButton extends BabylonViewer.AbstractViewerNavbarButton {
+  constructor(viewer) {
+    super();
+    this.viewer = viewer;
+    this._buttonClass = "test-button";
+    this._htmlTemplate = `
+    <input class='test-button' id='slider' type='range' min='-5' max='5' value='0' step='0.1'>
+`;
+  }
+}
+
+BabylonViewer.viewerManager
+  .getViewerPromiseById("babylon-viewer")
+  .then(function(viewer) {
+    viewer.onInitDoneObservable.add(function() {
+      viewer.registerTemplatePlugin(new MyAwesomeButton(viewer));
+      let slider = document.getElementById("slider");
+      slider.oninput = function() {
+        newExplosion3.explode(slider.value*1);
+      };
+    });
+  });
+</script>
 
 </body>
 </html>
