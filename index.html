@@ -24,9 +24,11 @@ BabylonViewer.viewerManager.getViewerPromiseById('babylon-viewer').then(function
                 console.log('Using promises: ', 'viewer - ' + viewer.getBaseId());
                 viewerObservables(viewer);
 });
+var modelRoot;
 function viewerObservables(viewer) {
     viewer.onModelLoadedObservable.add(function (model) {
-        newExplosion3 = new BABYLON.MeshExploder(model._meshes, model._meshes[0]);
+        modelRoot = model;
+        newExplosion3 = new BABYLON.MeshExploder(model.meshes, model.meshes[0]);
     });
 }
 
