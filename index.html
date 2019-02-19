@@ -25,10 +25,11 @@ BabylonViewer.viewerManager.getViewerPromiseById('babylon-viewer').then(function
                 viewerObservables(viewer);
 });
 var modelRoot;
+var newExplosion3;
 function viewerObservables(viewer) {
     viewer.onModelLoadedObservable.add(function (model) {
         modelRoot = model;
-        newExplosion3 = new BABYLON.MeshExploder(model.meshes, model.meshes[0]);
+        newExplosion3 = new BABYLON.MeshExploder(modelRoot.meshes, modelRoot.meshes[0]);
     });
 }
 
